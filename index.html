@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Boxxed | Infrastructure for SME Trade</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.png" type="image/png">
+
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #0b0b0b;
+      --muted: #666;
+      --card: #f7f7f7;
+      --border: #eaeaea;
+      --accent: #0b0b0b;
+      --highlight: #2563eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      scroll-behavior: smooth;
+    }
+
+    /* NAV */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 30px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: white;
+      z-index: 1000;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+    }
+
+    .logo img {
+      height: 28px;
+      width: auto;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* HERO */
+    header {
+      text-align: center;
+      padding: 90px 20px 60px;
+    }
+
+    header h1 {
+      font-size: 52px;
+      margin: 0;
+      letter-spacing: -1px;
+      animation: fadeIn 1s ease-out;
+    }
+
+    header p {
+      margin-top: 15px;
+      font-size: 18px;
+      color: var(--muted);
+      animation: fadeIn 1.2s ease-out;
+    }
+
+    .cta {
+      margin-top: 25px;
+      display: inline-block;
+      padding: 12px 18px;
+      background: var(--accent);
+      color: white;
+      font-weight: 500;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: 0.3s ease;
+    }
+
+    .cta:hover {
+      transform: scale(1.05);
+      background: #222;
+    }
+
+    /* METRICS */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      max-width: 1000px;
+      margin: 0 auto 50px;
+      padding: 0 20px;
+    }
+
+    .metric {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+      transition: 0.3s ease;
+    }
+
+    .metric:hover {
+      transform: translateY(-4px);
+    }
+
+    .metric h3 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .metric p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* SECTIONS */
+    section {
+      max-width: 900px;
+      margin: auto;
+      padding: 40px 20px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease;
+    }
+
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    h2 {
+      font-size: 20px;
+      border-left: 3px solid black;
+      padding-left: 10px;
+      margin-bottom: 15px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 18px;
+      border-radius: 12px;
+    }
+
+    ul {
+      padding-left: 18px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 50px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .metrics {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      header h1 {
+        font-size: 36px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<div class="nav">
+  <div class="logo">
+    <img src="boxxed-logo.svg" alt="Boxxed Logo">
+    <span>Boxxed</span>
+  </div>
+  <a href="mailto:boxxedng@yahoo.com">Contact</a>
+</div>
+
+<!-- HERO -->
+<header>
+  <h1>Infrastructure for SME Cross-Border Trade</h1>
+  <p>Logistics, Payments & Business Tools in One Unified System</p>
+  <a class="cta" href="mailto:boxxedng@yahoo.com">Request Investment Discussion</a>
+</header>
+
+<!-- METRICS -->
+<div class="metrics">
+  <div class="metric"><h3>42</h3><p>Active Customers</p></div>
+  <div class="metric"><h3>200+</h3><p>Shipments Completed</p></div>
+  <div class="metric"><h3>100%</h3><p>Repeat Usage</p></div>
+  <div class="metric"><h3>₦500K</h3><p>Monthly Revenue</p></div>
+</div>
+
+<!-- CONTENT -->
+<section>
+  <h2>Executive Summary</h2>
+  <div class="card">
+    Boxxed is a logistics and fintech infrastructure platform enabling SME exporters to manage cross-border shipping, payments, and operations through a unified system.
+  </div>
+</section>
+
+<section>
+  <h2>Problem</h2>
+  <div class="card">
+    SME exporters rely on fragmented WhatsApp-based logistics coordination, resulting in inefficiencies, inconsistent pricing, and lack of operational visibility.
+  </div>
+</section>
+
+<section>
+  <h2>Solution</h2>
+  <div class="card">
+    A unified platform for booking shipments, managing payments, tracking logistics, and maintaining business operations.
+  </div>
+</section>
+
+<section>
+  <h2>Monetization</h2>
+  <div class="card">
+    Multi-layer model: logistics margins, business tools, bill payments, and loyalty system.
+  </div>
+</section>
+
+<section>
+  <h2>Competitive Advantage</h2>
+  <div class="card">
+    Hybrid execution + platform model with SME niche focus, embedded fintech (wallet + KYC), and loyalty-driven retention system.
+  </div>
+</section>
+
+<section>
+  <h2>Go-To-Market</h2>
+  <div class="card">
+    Niche SME communities, WhatsApp referrals, content-led acquisition funnels, and loyalty-driven growth loops.
+  </div>
+</section>
+
+<section>
+  <h2>Funding Use</h2>
+  <div class="card">
+    Product automation, customer acquisition, and operational scaling to transition into a fully digital logistics infrastructure platform.
+  </div>
+</section>
+
+<footer>
+  © Boxxed — Infrastructure for SME Trade
+</footer>
+
+<script>
+  const sections = document.querySelectorAll("section");
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+      }
+    });
+  }, { threshold: 0.1 });
+
+  sections.forEach(section => observer.observe(section));
+</script>
+
+</body>
+</html>
