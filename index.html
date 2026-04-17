@@ -4,48 +4,62 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Boxxed | Infrastructure for SME Trade</title>
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 
   <!-- Favicon -->
   <link rel="icon" href="favicon.png" type="image/png">
 
-  <!-- Font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
   <style>
     :root {
-      --bg: #ffffff;
-      --text: #0b0b0b;
-      --muted: #666;
-      --card: #f7f7f7;
-      --border: #eaeaea;
-      --accent: #0b0b0b;
-      --highlight: #2563eb;
+      --bg: #0d1117;
+      --bg2: #111827;
+      --card: #161d2e;
+      --border: #1e2d45;
+      --border-glow: #2563eb44;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --subtle: #94a3b8;
+      --blue: #3b82f6;
+      --blue-bright: #60a5fa;
+      --blue-glow: #3b82f618;
+      --blue-glow-strong: #3b82f640;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
 
     body {
-      margin: 0;
-      font-family: "Inter", sans-serif;
+      font-family: "DM Sans", sans-serif;
       background: var(--bg);
       color: var(--text);
-      scroll-behavior: smooth;
+      overflow-x: hidden;
     }
 
-    /* NAV */
+    /* NOISE OVERLAY */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.5;
+    }
+
+    /* ── NAV ── */
     .nav {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 18px 30px;
+      padding: 18px 40px;
       border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
-      background: white;
+      background: rgba(13,17,23,0.88);
+      backdrop-filter: blur(18px);
       z-index: 1000;
     }
 
@@ -61,234 +75,697 @@
       height: 28px;
       width: auto;
     }
+    
 
-    .nav a {
-      text-decoration: none;
-      color: var(--muted);
-      font-size: 14px;
+    .nav-links { display: flex; align-items: center; gap: 24px; }
+
+    .nav-links a {
+      text-decoration: none; color: var(--muted); font-size: 14px;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      padding: 8px 18px !important;
+      background: var(--blue) !important;
+      color: white !important;
+      border-radius: 8px !important;
+      font-size: 13px !important;
+      font-weight: 500 !important;
+      box-shadow: 0 0 20px var(--blue-glow-strong);
+      transition: all 0.2s ease !important;
+    }
+    .nav-cta:hover {
+      background: var(--blue-bright) !important;
+      transform: translateY(-1px) !important;
     }
 
-    /* HERO */
-    header {
+    /* ── HERO ── */
+    .hero {
+      position: relative;
       text-align: center;
-      padding: 90px 20px 60px;
+      padding: 120px 20px 90px;
+      overflow: hidden;
+      min-height: 520px;
     }
 
-    header h1 {
-      font-size: 52px;
-      margin: 0;
-      letter-spacing: -1px;
-      animation: fadeIn 1s ease-out;
+    #particle-canvas {
+      position: absolute;
+      inset: 0; width: 100%; height: 100%;
+      z-index: 0;
     }
 
-    header p {
-      margin-top: 15px;
-      font-size: 18px;
-      color: var(--muted);
-      animation: fadeIn 1.2s ease-out;
+    .hero-radial {
+      position: absolute;
+      top: -80px; left: 50%; transform: translateX(-50%);
+      width: 800px; height: 550px;
+      background: radial-gradient(ellipse, #3b82f614 0%, transparent 65%);
+      pointer-events: none; z-index: 1;
     }
 
-    .cta {
-      margin-top: 25px;
-      display: inline-block;
-      padding: 12px 18px;
-      background: var(--accent);
-      color: white;
-      font-weight: 500;
-      border-radius: 10px;
-      text-decoration: none;
-      transition: 0.3s ease;
+    .hero-content { position: relative; z-index: 2; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 16px;
+      background: var(--blue-glow);
+      border: 1px solid var(--border-glow);
+      border-radius: 100px;
+      font-size: 12px; color: var(--blue-bright); font-weight: 500;
+      margin-bottom: 28px; letter-spacing: 0.4px;
+      animation: fadeUp 0.6s ease both;
     }
 
-    .cta:hover {
-      transform: scale(1.05);
-      background: #222;
+    .pulse-dot {
+      width: 7px; height: 7px;
+      background: var(--blue); border-radius: 50%;
+      animation: pdot 2s ease-in-out infinite;
+    }
+    @keyframes pdot {
+      0%,100% { opacity:1; transform:scale(1); }
+      50% { opacity:0.3; transform:scale(0.6); }
     }
 
-    /* METRICS */
+    .hero h1 {
+      font-family: "Syne", sans-serif;
+      font-size: 68px; font-weight: 800;
+      letter-spacing: -2.5px; line-height: 1.04;
+      margin-bottom: 22px;
+      animation: fadeUp 0.7s ease 0.1s both;
+      background: linear-gradient(160deg, #e2e8f0 20%, #64748b 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero h1 .accent {
+      background: linear-gradient(130deg, #3b82f6, #93c5fd);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 18px; color: var(--muted); font-weight: 300;
+      max-width: 480px; margin: 0 auto 36px;
+      line-height: 1.65;
+      animation: fadeUp 0.8s ease 0.2s both;
+    }
+
+    .hero-actions {
+      display: flex; gap: 12px; justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeUp 0.9s ease 0.3s both;
+    }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 26px;
+      background: var(--blue); color: white;
+      font-weight: 500; font-size: 15px;
+      border-radius: 10px; text-decoration: none;
+      box-shadow: 0 0 30px var(--blue-glow-strong), 0 4px 16px rgba(0,0,0,.35);
+      transition: all 0.25s;
+    }
+    .btn-primary:hover {
+      background: var(--blue-bright);
+      transform: translateY(-2px);
+      box-shadow: 0 0 55px #3b82f655, 0 8px 24px rgba(0,0,0,.45);
+    }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 26px;
+      background: transparent; color: var(--subtle);
+      border: 1px solid var(--border); border-radius: 10px;
+      text-decoration: none; font-size: 15px;
+      transition: all 0.25s;
+    }
+    .btn-ghost:hover {
+      border-color: var(--border-glow);
+      color: var(--text); background: var(--blue-glow);
+    }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(22px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    /* ── METRICS ── */
+    .metrics-wrap {
+      max-width: 1000px;
+      margin: 0 auto 70px;
+      padding: 0 24px;
+    }
+
+    .metrics-eyebrow {
+      text-align: center;
+      font-size: 11px; letter-spacing: 2.5px;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 18px;
+    }
+
     .metrics {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 15px;
-      max-width: 1000px;
-      margin: 0 auto 50px;
-      padding: 0 20px;
+      gap: 14px;
     }
 
     .metric {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 20px;
+      border-radius: 16px;
+      padding: 26px 20px;
       text-align: center;
-      transition: 0.3s ease;
+      position: relative; overflow: hidden;
+      transition: all 0.3s ease;
+      cursor: default;
     }
+
+    .metric::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, var(--blue-glow), transparent 60%);
+      opacity: 0; transition: opacity 0.3s;
+    }
+
+    /* shimmer sweep */
+    .metric::after {
+      content: '';
+      position: absolute; top: 0; left: -120%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(59,130,246,.07), transparent);
+      animation: sweep 3.5s infinite ease-in-out;
+    }
+    .metric:nth-child(1)::after { animation-delay: 0s; }
+    .metric:nth-child(2)::after { animation-delay: 0.875s; }
+    .metric:nth-child(3)::after { animation-delay: 1.75s; }
+    .metric:nth-child(4)::after { animation-delay: 2.625s; }
+    @keyframes sweep { 0%{left:-120%} 100%{left:200%} }
 
     .metric:hover {
-      transform: translateY(-4px);
+      border-color: var(--border-glow);
+      transform: translateY(-5px);
+      box-shadow: 0 14px 40px rgba(0,0,0,.4), 0 0 28px var(--blue-glow);
     }
+    .metric:hover::before { opacity: 1; }
 
     .metric h3 {
-      margin: 0;
-      font-size: 22px;
+      font-family: "Syne", sans-serif;
+      font-size: 34px; font-weight: 800; letter-spacing: -1px;
+      color: var(--text); position: relative; z-index: 1;
     }
+
+    .metric h3 .bl { color: var(--blue-bright); }
 
     .metric p {
-      margin: 5px 0 0;
-      color: var(--muted);
-      font-size: 13px;
+      margin: 6px 0 0; color: var(--muted);
+      font-size: 12px; letter-spacing: 0.2px;
+      position: relative; z-index: 1;
     }
 
-    /* SECTIONS */
-    section {
-      max-width: 900px;
-      margin: auto;
-      padding: 40px 20px;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.6s ease;
+    .m-badge {
+      display: inline-block;
+      font-size: 10px; padding: 2px 9px;
+      background: #16a34a1a; color: #4ade80;
+      border: 1px solid #16a34a33;
+      border-radius: 100px; margin-top: 8px;
+      position: relative; z-index: 1;
     }
 
-    section.visible {
-      opacity: 1;
-      transform: translateY(0);
+    /* ── SECTIONS ── */
+    .section {
+      max-width: 900px; margin: auto; padding: 52px 24px;
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
     }
+    .section.visible { opacity:1; transform:translateY(0); }
 
-    h2 {
-      font-size: 20px;
-      border-left: 3px solid black;
-      padding-left: 10px;
-      margin-bottom: 15px;
+    .sec-head {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 22px;
+    }
+    .sec-head h2 {
+      font-family: "Syne", sans-serif;
+      font-size: 12px; font-weight: 700;
+      letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--blue-bright);
+      border: none; padding: 0;
+    }
+    .sec-rule {
+      flex: 1; height: 1px;
+      background: linear-gradient(90deg, var(--border-glow), transparent);
     }
 
     .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      padding: 18px;
-      border-radius: 12px;
+      background: var(--card); border: 1px solid var(--border);
+      padding: 26px 30px; border-radius: 16px;
+      color: var(--subtle); font-size: 15px; line-height: 1.78;
+      transition: border-color 0.3s;
+    }
+    .card:hover { border-color: var(--border-glow); }
+
+    .card-h {
+      font-family: "Syne", sans-serif;
+      font-size: 22px; font-weight: 700; letter-spacing: -0.5px;
+      color: var(--text); margin-bottom: 12px;
     }
 
-    ul {
-      padding-left: 18px;
+    /* ── PROBLEM SPLIT ── */
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .s-before {
+      background: #160e0e; border: 1px solid #3d1515;
+      border-radius: 16px; padding: 24px;
+    }
+    .s-after {
+      background: #0a1616; border: 1px solid #123333;
+      border-radius: 16px; padding: 24px;
     }
 
-    footer {
-      text-align: center;
-      padding: 50px;
-      font-size: 13px;
-      color: var(--muted);
+    .s-tag {
+      font-size: 10px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .s-red { color: #f87171; }
+    .s-green { color: #4ade80; }
+
+    .s-row {
+      display: flex; align-items: flex-start; gap: 10px;
+      margin-bottom: 10px; font-size: 13px; color: var(--muted);
+      line-height: 1.55;
+    }
+    .s-row span { flex-shrink: 0; font-size: 15px; margin-top: 1px; }
+
+    /* ── TIMELINE ── */
+    .timeline {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0; position: relative;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute; top: 28px;
+      left: 12.5%; right: 12.5%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-glow), var(--blue), var(--border-glow), transparent);
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    .flow-step { padding: 0 14px; text-align: center; }
+
+    .step-n {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--card); border: 1px solid var(--border-glow);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 18px;
+      font-family: "Syne", sans-serif; font-size: 15px; font-weight: 800;
+      color: var(--blue-bright);
+      box-shadow: 0 0 18px var(--blue-glow);
+      transition: all 0.3s; position: relative; z-index: 1;
+    }
+    .flow-step:hover .step-n {
+      background: var(--blue); color: white;
+      box-shadow: 0 0 32px var(--blue-glow-strong);
+      transform: scale(1.1);
     }
 
+    .flow-step h3 {
+      font-family: "Syne", sans-serif;
+      font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 8px;
+    }
+    .flow-step p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+    /* ── WHY NOW ── */
+    .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+
+    .why-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 24px;
+      transition: all 0.3s;
+    }
+    .why-card:hover {
+      border-color: var(--border-glow);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,.35);
+    }
+    .why-icon { font-size: 24px; margin-bottom: 14px; }
+    .why-card h3 {
+      font-family: "Syne", sans-serif;
+      font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 7px;
+    }
+    .why-card p { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+    /* ── FOOTER ── */
+    .footer {
+      margin-top: 100px; padding: 90px 24px;
+      background: linear-gradient(180deg, var(--bg) 0%, #06090f 100%);
+      border-top: 1px solid var(--border);
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .footer::before {
+      content: '';
+      position: absolute; bottom: -120px; left: 50%;
+      transform: translateX(-50%);
+      width: 700px; height: 500px;
+      background: radial-gradient(ellipse, #3b82f610 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .footer-inner { position: relative; z-index: 1; max-width: 560px; margin: auto; }
+
+    .raising-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 7px 16px;
+      background: var(--blue-glow); border: 1px solid var(--border-glow);
+      border-radius: 100px; font-size: 12px; color: var(--blue-bright);
+      margin-bottom: 22px;
+    }
+
+    .footer-wordmark {
+      font-family: "Syne", sans-serif;
+      font-size: 30px; font-weight: 800; letter-spacing: -1px;
+      color: var(--text); margin-bottom: 6px;
+    }
+
+    .footer-tagline { color: var(--muted); font-size: 14px; }
+
+    .footer-div {
+      width: 36px; height: 2px;
+      background: var(--blue); border-radius: 2px;
+      margin: 26px auto; opacity: 0.4;
+    }
+
+    .footer-body {
+      color: var(--muted); font-size: 14px; line-height: 1.75;
+      margin-bottom: 32px;
+    }
+
+    .footer-cta {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 16px 30px;
+      background: var(--blue); color: white;
+      text-decoration: none; border-radius: 12px;
+      font-weight: 600; font-size: 15px;
+      transition: all 0.3s;
+      box-shadow: 0 0 40px var(--blue-glow-strong), 0 4px 20px rgba(0,0,0,.4);
+      animation: glow-breathe 3s ease-in-out infinite;
+    }
+    @keyframes glow-breathe {
+      0%,100% { box-shadow: 0 0 30px var(--blue-glow-strong), 0 4px 20px rgba(0,0,0,.4); }
+      50%      { box-shadow: 0 0 65px #3b82f660, 0 8px 28px rgba(0,0,0,.5); }
+    }
+    .footer-cta:hover {
+      background: var(--blue-bright); transform: translateY(-3px) scale(1.02);
+      animation: none;
+      box-shadow: 0 0 80px #3b82f670, 0 12px 32px rgba(0,0,0,.5);
+    }
+
+    .footer-copy { margin-top: 38px; font-size: 12px; color: #273348; }
+
+    /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
-      .metrics {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      header h1 {
-        font-size: 36px;
-      }
+      .hero h1 { font-size: 38px; letter-spacing: -1.5px; }
+      .metrics { grid-template-columns: 1fr 1fr; }
+      .timeline { grid-template-columns: 1fr 1fr; }
+      .timeline::before { display: none; }
+      .split { grid-template-columns: 1fr; }
+      .why-grid { grid-template-columns: 1fr; }
+      .nav { padding: 16px 20px; }
+      .hero { padding: 80px 20px 60px; min-height: 480px; }
     }
   </style>
 </head>
-
 <body>
 
+<canvas id="particle-canvas" style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.35;"></canvas>
+
 <!-- NAV -->
-<div class="nav">
-  <div class="logo">
+<nav class="nav">
+  <a href="#" class="logo">
     <img src="boxxed-logo.svg" alt="Boxxed Logo">
     <span>Boxxed</span>
+  </a>
+
+  <div class="nav-links">
+    <a href="#how">How It Works</a>
+    <a href="#traction">Traction</a>
+    <a href="mailto:boxxedng@yahoo.com" class="nav-cta">Contact Us</a>
   </div>
-  <a href="mailto:boxxedng@yahoo.com">Contact</a>
-</div>
+</nav>
 
 <!-- HERO -->
-<header>
-  <h1>Infrastructure for SME Cross-Border Trade</h1>
-  <p>Logistics, Payments & Business Tools in One Unified System</p>
-  <a class="cta" href="mailto:boxxedng@yahoo.com">Request Investment Discussion</a>
-</header>
+<section class="hero">
+  <div class="hero-radial"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <div class="pulse-dot"></div>
+      Pre-Seed · Actively Raising
+    </div>
+    <h1>Infrastructure for<br><span class="accent">SME Cross-Border</span><br>Trade</h1>
+    <p class="hero-sub">Logistics, payments & business tools unified in one platform — built for African exporters.</p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="mailto:boxxedng@yahoo.com">Request Investor Access →</a>
+      <a class="btn-ghost" href="#how">See How It Works</a>
+    </div>
+  </div>
+</section>
 
 <!-- METRICS -->
-<div class="metrics">
-  <div class="metric"><h3>42</h3><p>Active Customers</p></div>
-  <div class="metric"><h3>200+</h3><p>Shipments Completed</p></div>
-  <div class="metric"><h3>100%</h3><p>Repeat Usage</p></div>
-  <div class="metric"><h3>₦500K</h3><p>Monthly Revenue</p></div>
+<div id="traction" class="metrics-wrap">
+  <div class="metrics-eyebrow">Live Traction — 2025</div>
+  <div class="metrics">
+    <div class="metric">
+      <h3><span class="count" data-target="42">0</span></h3>
+      <p>Active Customers</p>
+      <div class="m-badge">↑ Growing</div>
+    </div>
+    <div class="metric">
+      <h3><span class="count" data-target="200">0</span><span class="bl">+</span></h3>
+      <p>Shipments Completed</p>
+      <div class="m-badge">↑ This Year</div>
+    </div>
+    <div class="metric">
+      <h3><span class="count" data-target="100">0</span><span class="bl">%</span></h3>
+      <p>Repeat Usage Rate</p>
+      <div class="m-badge">↑ Retention</div>
+    </div>
+    <div class="metric">
+      <h3>₦<span class="count" data-target="500">0</span><span class="bl">K</span></h3>
+      <p>Monthly Revenue</p>
+      <div class="m-badge">↑ Monthly</div>
+    </div>
+  </div>
 </div>
 
-<!-- CONTENT -->
-<section>
-  <h2>Executive Summary</h2>
+<!-- EXECUTIVE SUMMARY -->
+<div class="section">
+  <div class="sec-head"><h2>Executive Summary</h2><div class="sec-rule"></div></div>
   <div class="card">
-    Boxxed is a logistics and fintech infrastructure platform enabling SME exporters to manage cross-border shipping, payments, and operations through a unified system.
+    <div class="card-h">One platform. Every layer of SME trade.</div>
+    Boxxed is a logistics and fintech infrastructure platform enabling SME exporters to manage cross-border shipping, payments, and operations through a unified system, replacing fragmented, manual coordination with a single digital stack built for African commerce.
   </div>
-</section>
+</div>
 
-<section>
-  <h2>Problem</h2>
+<!-- PROBLEM -->
+<div class="section">
+  <div class="sec-head"><h2>The Problem</h2><div class="sec-rule"></div></div>
+  <div class="split">
+    <div class="s-before">
+      <div class="s-tag s-red">✕ Before Boxxed</div>
+      <div class="s-row"><span>💬</span> WhatsApp-based logistics coordination</div>
+      <div class="s-row"><span>📊</span> Inconsistent, opaque pricing</div>
+      <div class="s-row"><span>👁️</span> Zero operational visibility</div>
+      <div class="s-row"><span>🔀</span> Multiple fragmented vendors</div>
+      <div class="s-row"><span>💸</span> Manual payment reconciliation</div>
+    </div>
+    <div class="s-after">
+      <div class="s-tag s-green">✓ With Boxxed</div>
+      <div class="s-row"><span>🖥️</span> Unified digital dashboard</div>
+      <div class="s-row"><span>⚡</span> Instant, transparent rates</div>
+      <div class="s-row"><span>📍</span> Live shipment tracking</div>
+      <div class="s-row"><span>🔗</span> Single integrated platform</div>
+      <div class="s-row"><span>💳</span> Embedded wallet & payments</div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div id="how" class="section">
+  <div class="sec-head"><h2>How Boxxed Works</h2><div class="sec-rule"></div></div>
+  <div class="timeline">
+    <div class="flow-step">
+      <div class="step-n">01</div>
+      <h3>Onboard SME</h3>
+      <p>Sign up, complete KYC, and access individual or business dashboards.</p>
+    </div>
+    <div class="flow-step">
+      <div class="step-n">02</div>
+      <h3>Book Shipment</h3>
+      <p>Get instant rates, book shipments, and initiate logistics processing.</p>
+    </div>
+    <div class="flow-step">
+      <div class="step-n">03</div>
+      <h3>Track & Fulfil</h3>
+      <p>Processed via logistics partners with live tracking updates.</p>
+    </div>
+    <div class="flow-step">
+      <div class="step-n">04</div>
+      <h3>Pay & Earn</h3>
+      <p>Pay via wallet, earn shipping points, and receive rewards.</p>
+    </div>
+  </div>
+</div>
+
+<!-- WHY NOW -->
+<div class="section">
+  <div class="sec-head"><h2>Why Now</h2><div class="sec-rule"></div></div>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-icon">📦</div>
+      <h3>SME Export Boom</h3>
+      <p>African SME cross-border trade is accelerating under AfCFTA, creating urgent demand for digital infrastructure.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">📱</div>
+      <h3>Mobile-First Market</h3>
+      <p>High smartphone penetration among SME operators creates a ready audience for a digital-first logistics platform.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🏗️</div>
+      <h3>Infrastructure Gap</h3>
+      <p>No unified logistics + fintech stack exists for SME exporters. Boxxed is building the category from scratch.</p>
+    </div>
+  </div>
+</div>
+
+<!-- MONETIZATION -->
+<div class="section">
+  <div class="sec-head"><h2>Monetization</h2><div class="sec-rule"></div></div>
   <div class="card">
-    SME exporters rely on fragmented WhatsApp-based logistics coordination, resulting in inefficiencies, inconsistent pricing, and lack of operational visibility.
+    <div class="card-h">Multi-layer revenue model</div>
+    Logistics margins on every shipment · Business tools subscriptions · Bill payment fees · Loyalty system upsells, each layer compounds retention and revenue as the customer base scales.
   </div>
-</section>
+</div>
 
-<section>
-  <h2>Solution</h2>
+<!-- COMPETITIVE ADVANTAGE -->
+<div class="section">
+  <div class="sec-head"><h2>Competitive Advantage</h2><div class="sec-rule"></div></div>
   <div class="card">
-    A unified platform for booking shipments, managing payments, tracking logistics, and maintaining business operations.
+    <div class="card-h">Hybrid execution + platform model</div>
+    SME niche focus with embedded fintech (wallet + KYC), a loyalty-driven retention flywheel, and operational infrastructure that competitors can't replicate from a purely digital starting point.
   </div>
-</section>
+</div>
 
-<section>
-  <h2>Monetization</h2>
+<!-- GO-TO-MARKET -->
+<div class="section">
+  <div class="sec-head"><h2>Go-To-Market</h2><div class="sec-rule"></div></div>
   <div class="card">
-    Multi-layer model: logistics margins, business tools, bill payments, and loyalty system.
+    <div class="card-h">Community-led, loyalty-amplified growth</div>
+    Niche SME communities · WhatsApp referral loops · Content-led acquisition funnels · Loyalty-driven retention system that turns every customer into a distribution channel.
   </div>
-</section>
+</div>
 
-<section>
-  <h2>Competitive Advantage</h2>
+<!-- FUNDING USE -->
+<div class="section">
+  <div class="sec-head"><h2>Use of Funds</h2><div class="sec-rule"></div></div>
   <div class="card">
-    Hybrid execution + platform model with SME niche focus, embedded fintech (wallet + KYC), and loyalty-driven retention system.
+    <div class="card-h">Scaling the infrastructure</div>
+    Product automation · Customer acquisition · Operational scaling; completing the transition from hybrid to a fully digital logistics infrastructure platform ready for Series A.
   </div>
-</section>
+</div>
 
-<section>
-  <h2>Go-To-Market</h2>
-  <div class="card">
-    Niche SME communities, WhatsApp referrals, content-led acquisition funnels, and loyalty-driven growth loops.
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="raising-pill"><div class="pulse-dot"></div> Currently raising pre-seed</div>
+    <div class="footer-wordmark">Boxxed</div>
+    <div class="footer-tagline">Infrastructure for SME Cross-Border Trade</div>
+    <div class="footer-div"></div>
+    <p class="footer-body">
+      We are building the logistics and fintech layer that African SME exporters have never had. If you are an investor aligned with emerging market infrastructure, we'd love to talk.
+    </p>
+    <a href="mailto:founder@boxxed.com" class="footer-cta">Request Investor Access →</a>
+    <p class="footer-copy">© 2025 Boxxed. All rights reserved.</p>
   </div>
-</section>
-
-<section>
-  <h2>Funding Use</h2>
-  <div class="card">
-    Product automation, customer acquisition, and operational scaling to transition into a fully digital logistics infrastructure platform.
-  </div>
-</section>
-
-<footer>
-  © Boxxed — Infrastructure for SME Trade
 </footer>
 
 <script>
-  const sections = document.querySelectorAll("section");
+/* ── PARTICLE CANVAS ── */
+const canvas = document.getElementById('particle-canvas');
+const ctx = canvas.getContext('2d');
+let pts = [];
 
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-      }
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = document.body.scrollHeight;
+}
+
+function init() {
+  pts = [];
+  const n = Math.floor((canvas.width * canvas.height) / 22000);
+  for (let i = 0; i < n; i++) {
+    pts.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.4 + 0.3,
+      dx: (Math.random() - 0.5) * 0.35,
+      dy: (Math.random() - 0.5) * 0.35,
+      a: Math.random() * 0.45 + 0.08
     });
-  }, { threshold: 0.1 });
+  }
+}
 
-  sections.forEach(section => observer.observe(section));
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (let i = 0; i < pts.length; i++) {
+    const p = pts[i];
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(59,130,246,${p.a})`;
+    ctx.fill();
+    p.x += p.dx; p.y += p.dy;
+    if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+    if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+
+    for (let j = i + 1; j < pts.length; j++) {
+      const q = pts[j];
+      const dx = p.x - q.x, dy = p.y - q.y;
+      const d = Math.sqrt(dx*dx + dy*dy);
+      if (d < 110) {
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(59,130,246,${0.07 * (1 - d/110)})`;
+        ctx.lineWidth = 0.5;
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(q.x, q.y);
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(draw);
+}
+
+resize(); init(); draw();
+window.addEventListener('resize', () => { resize(); init(); });
+
+/* ── SECTION REVEAL ── */
+const secs = document.querySelectorAll('.section');
+const ro = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.07 });
+secs.forEach(s => ro.observe(s));
+
+/* ── COUNTERS ── */
+const counts = document.querySelectorAll('.count');
+const run = el => {
+  const t = +el.dataset.target;
+  let c = 0, step = t / 70;
+  const tick = () => {
+    c += step;
+    if (c < t) { el.textContent = Math.floor(c); requestAnimationFrame(tick); }
+    else el.textContent = t;
+  };
+  tick();
+};
+const co = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) { run(e.target); co.unobserve(e.target); } });
+});
+counts.forEach(c => co.observe(c));
 </script>
-
 </body>
 </html>
